@@ -1,0 +1,51 @@
+{
+  "name": "match-url",
+  "version": "0.1.0",
+  "description": "A pattern matcher library for routes with typed parameters",
+  "main": "lib/index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itajaja/match-url.git"
+  },
+  "homepage": "https://github.com/itajaja/match-url",
+  "bugs": "https://github.com/itajaja/match-url/issues",
+  "scripts": {
+    "build": "webpack",
+    "lint": "eslint modules",
+    "test": "npm run lint && karma start"
+  },
+  "authors": [
+    "Giacomo Tagliabue"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "invariant": "^2.0.0",
+    "warning": "^2.0.0"
+  },
+  "devDependencies": {
+    "babel": "^5.4.7",
+    "babel-core": "^5.4.7",
+    "babel-loader": "^5.0.0",
+    "eslint": "^1.7.3",
+    "expect": "^1.12.0",
+    "karma": "^0.13.13",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "karma-sourcemap-loader": "^0.3.5",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.0.1",
+    "webpack": "^1.4.13"
+  },
+  "tags": [
+    "route",
+    "url"
+  ],
+  "keywords": [
+    "routing",
+    "route",
+    "routes",
+    "router",
+    "url",
+    "matcher"
+  ]
+}
