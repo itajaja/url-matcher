@@ -10,7 +10,6 @@ export function _clearCache() {
 
 function _createRoute({ pattern, rules }) {
   const regex = /:([a-zA-Z_$][a-zA-Z0-9_$]*)|\*\*|\*|\(|\)|[^:*()]+/g
-  const matches = getAllMatches(regex, pattern)
   const tokens = [], params = []
   let regexpSource = ''
 
@@ -19,6 +18,7 @@ function _createRoute({ pattern, rules }) {
     pattern = `/${pattern}`
   }
 
+  const matches = getAllMatches(regex, pattern)
   for( let [ token, paramName ] of matches) {
     let rule
 
@@ -86,6 +86,7 @@ export function matchPattern(route, pathname) {
       rules: {}
     }
   }
+  route.rules = route.rules || {}
 
   const { regexpSource, params } = _getRoute(route)
   const match = pathname.match(regexpSource)
