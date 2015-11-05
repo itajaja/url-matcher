@@ -11,6 +11,7 @@ module.exports = {
   entry: APP_PATH,
 
   output: {
+    library: 'UrlMatcher',
     path: BUILD_PATH,
     filename: 'index.js'
   },

@@ -1,0 +1,1 @@
+export { matchPattern } from './matcher'
