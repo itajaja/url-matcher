@@ -1,5 +1,6 @@
 import { escapeSource, getAllMatches } from './regexUtils'
 import { string, splat, greedySplat } from './rules'
+import invariant from 'invariant'
 
 let routeCache = {}
 
@@ -71,14 +72,7 @@ function _validateRules(paramValues, params) {
     params[i].rule.validate(param))
 }
 
-/**
- * Matches a pathname with a specified pattern
- */
-export function matchPattern(route, pathname) {
-  if (pathname.charAt(0) !== '/') {
-    pathname = `/${pathname}`
-  }
-
+function _normalizeRoute(route) {
   // if the route is of type string, convert it to a route object
   if(typeof(route) === 'string') {
     route = {
@@ -86,7 +80,18 @@ export function matchPattern(route, pathname) {
       rules: {}
     }
   }
+  invariant(route.pattern, 'you cannot use an empty route pattern')
+  // default rules to empty object
   route.rules = route.rules || {}
+  return route
+}
+
+/**
+ * Matches a pathname with a specified pattern
+ */
+export function matchPattern(route, pathname) {
+  if (pathname.charAt(0) !== '/') pathname = `/${pathname}`
+  route = _normalizeRoute(route)
 
   const { regexpSource, params } = _getRoute(route)
   const match = pathname.match(regexpSource)
@@ -111,4 +116,54 @@ export function matchPattern(route, pathname) {
     paramValues,
     paramNames: params.map(p => p.paramName)
   }
+}
+
+/**
+ * Returns a version of the given pattern with params interpolated. Throws
+ * if there is a dynamic segment of the pattern for which there is no param.
+ */
+export function formatPattern(route, params) {
+  params = params || {}
+  route = _normalizeRoute(route)
+
+  const { tokens } = _getRoute(route)
+  let parenCount = 0, pathname = '', splatIndex = 0
+
+  let token, paramName, paramValue
+  for (let i = 0, len = tokens.length; i < len; ++i) {
+    token = tokens[i]
+
+    if (token === '*' || token === '**') {
+      paramValue = Array.isArray(params.splat) ? params.splat[splatIndex++] : params.splat
+
+      invariant(
+        paramValue != null || parenCount > 0,
+        'Missing splat #%s for path "%s"',
+        splatIndex, route.pattern
+      )
+
+      if (paramValue != null)
+        pathname += encodeURI(paramValue)
+    } else if (token === '(') {
+      parenCount += 1
+    } else if (token === ')') {
+      parenCount -= 1
+    } else if (token.charAt(0) === ':') {
+      paramName = token.substring(1)
+      paramValue = params[paramName]
+
+      invariant(
+        paramValue != null || parenCount > 0,
+        'Missing "%s" parameter for path "%s"',
+        paramName, route.pattern
+      )
+
+      if (paramValue != null)
+        pathname += encodeURIComponent(paramValue)
+    } else {
+      pathname += token
+    }
+  }
+
+  return pathname.replace(/\/+/g, '/')
 }
