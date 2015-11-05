@@ -1,1 +1,1 @@
-export { matchPattern, formatPattern } from './matcher'
+export { matchPattern, formatPattern, getRoute, getParams } from './matcher'

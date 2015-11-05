@@ -56,15 +56,9 @@ function _createRoute({ pattern, rules }) {
   return {
     tokens,
     regexpSource,
-    params
+    params,
+    paramNames: params.map(p => p.paramName)
   }
-}
-
-function _getRoute(route) {
-  if(!routeCache[route.pattern]) {
-    routeCache[route.pattern] = _createRoute(route)
-  }
-  return routeCache[route.pattern]
 }
 
 function _validateRules(paramValues, params) {
@@ -86,14 +80,22 @@ function _normalizeRoute(route) {
   return route
 }
 
+
+export function getRoute(route) {
+  route = _normalizeRoute(route)
+  if(!routeCache[route.pattern]) {
+    routeCache[route.pattern] = _createRoute(route)
+  }
+  return routeCache[route.pattern]
+}
+
 /**
  * Matches a pathname with a specified pattern
  */
 export function matchPattern(route, pathname) {
   if (pathname.charAt(0) !== '/') pathname = `/${pathname}`
-  route = _normalizeRoute(route)
 
-  const { regexpSource, params } = _getRoute(route)
+  const { regexpSource, params, paramNames } = getRoute(route)
   const match = pathname.match(regexpSource)
 
   if(match == null) return
@@ -114,7 +116,7 @@ export function matchPattern(route, pathname) {
   return {
     remainingPathname,
     paramValues,
-    paramNames: params.map(p => p.paramName)
+    paramNames
   }
 }
 
@@ -124,9 +126,8 @@ export function matchPattern(route, pathname) {
  */
 export function formatPattern(route, params) {
   params = params || {}
-  route = _normalizeRoute(route)
 
-  const { tokens } = _getRoute(route)
+  const { tokens } = getRoute(route)
   let parenCount = 0, pathname = '', splatIndex = 0
 
   let token, paramName, paramValue
@@ -166,4 +167,15 @@ export function formatPattern(route, params) {
   }
 
   return pathname.replace(/\/+/g, '/')
+}
+
+export function getParams(route, pathname) {
+  const { paramNames, paramValues } = matchPattern(route, pathname) || {}
+  const dic = []
+  if(!paramNames) return null
+
+  for (let i = 0; i < paramNames.length; i++) {
+    dic[paramNames[i]] = paramValues[i]
+  }
+  return dic
 }
