@@ -1,6 +1,6 @@
-# match-url
+# url-matcher
 
-A pattern matcher library for routes with typed parameters
+A pattern matcher library for route URLs with typed parameters.
 
 ## Usage
 
