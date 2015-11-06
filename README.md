@@ -1,5 +1,7 @@
 # url-matcher
 
+[![NPM](https://nodei.co/npm/url-matcher.png?downloads=true)](https://nodei.co/npm/url-matcher/)
+
 A pattern matcher library for route URLs with typed parameters.
 
 ## Usage

@@ -1,14 +1,14 @@
 {
-  "name": "match-url",
-  "version": "0.2.0",
+  "name": "url-matcher",
+  "version": "0.2.1",
   "description": "A pattern matcher library for routes with typed parameters",
   "main": "lib/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/itajaja/match-url.git"
+    "url": "https://github.com/itajaja/url-matcher.git"
   },
-  "homepage": "https://github.com/itajaja/match-url",
-  "bugs": "https://github.com/itajaja/match-url/issues",
+  "homepage": "https://github.com/itajaja/url-matcher",
+  "bugs": "https://github.com/itajaja/url-matcher/issues",
   "scripts": {
     "build": "webpack",
     "lint": "eslint modules",
