@@ -10,8 +10,8 @@
   "homepage": "https://github.com/itajaja/url-matcher",
   "bugs": "https://github.com/itajaja/url-matcher/issues",
   "scripts": {
-    "build": "webpack",
-    "lint": "eslint modules",
+    "build": "babel src -d lib",
+    "lint": "eslint src",
     "test": "npm run lint && karma start"
   },
   "authors": [
@@ -34,9 +34,7 @@
     "karma-mocha": "^0.2.0",
     "karma-mocha-reporter": "^1.1.1",
     "karma-sourcemap-loader": "^0.3.5",
-    "karma-webpack": "^1.7.0",
-    "mocha": "^2.0.1",
-    "webpack": "^1.4.13"
+    "mocha": "^2.0.1"
   },
   "tags": [
     "route",
