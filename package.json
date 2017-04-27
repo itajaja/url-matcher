@@ -1,6 +1,6 @@
 {
   "name": "url-matcher",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A pattern matcher library for routes with typed parameters",
   "main": "lib/index",
   "repository": {
